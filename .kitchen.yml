@@ -1,0 +1,43 @@
+---
+driver:
+  name: terraform
+
+  # terraform resource는 ./terraform 디렉토리에서 관리되고 있으므로
+  # 해당 디렉토리를 설정해 준다. 기본값은 현재 위치
+  root_module_directory: ./terraform
+
+  # test-kitchen에서는 설정파일을 템플릿 엔진을 이용해서 읽어들이므로
+  # 아래처럼 terraform variable을 환경변수의 값으로 할당하는 등의 조작이 가능하다.
+  variables:
+    test_keypair_public_key: "<%= ENV['TF_VAR_test_keypair_public_key'] %>"
+
+  # 만약 tfstate를 리모트로 관리하고 있다면,
+  # 해당 설정에서 tfstate의 경로를 지정해 주면 된다.
+  # ref: http://www.rubydoc.info/github/newcontext-oss/kitchen-terraform/Kitchen/Driver/Terraform
+  # backend_configurations:
+  #   address: demo.consul.io
+  #   path: example_app/terraform_state
+
+provisioner:
+  name: terraform
+
+platforms:
+  - name: example-infra
+
+transport:
+  name: ssh
+  username: ubuntu
+  ssh_key: ~/.ssh/id_rsa
+
+verifier:
+  name: terraform
+  reporter: doc
+  groups:
+    - name: default
+      controls:
+        - operating_system
+      hostnames: public_ip
+      username: ubuntu
+
+suites:
+  - name: default

@@ -1,0 +1,10 @@
+.env
+*.swp
+
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+.tarraform.tfstate.lock
+.terraform.tfstate.lock.info
+
+.kitchen/
