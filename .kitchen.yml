@@ -38,6 +38,7 @@ verifier:
         - operating_system
       hostnames: public_ip
       username: ubuntu
+  report: junit:./junit.xml
 
 suites:
   - name: default
